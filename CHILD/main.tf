@@ -19,3 +19,31 @@ module "network" {
     allowed_ssh_cidr = ["0.0.0.0/0"]
   
 }
+
+module "bastion" {
+    source = "../ROOT-MODULE/Bastion"
+    ami_id = "ami-00ca32bbc84273381"
+    instance_type = "t3.mirco"
+    key_name = "test.pem"
+    subnet_id = module.network.public_subnets[0]
+    security_group_id = module.network.bastion_sg_id
+  
+}
+
+module "rds" {
+    source = "../ROOT-MODULE/rds"
+    project_name = "three_tire"
+    identifier = "book-rds"
+    allocated_storage = 20
+    engine = "mysql"
+    engine_version = "8.0"
+    instance_class = "db.t3.micro"
+    multi_az = false
+    db_name = "bookdb"
+    db_username = "admin"
+    db_password = "SkyOps123"
+    db_subnet_1_id = module.network.database_subnets[0]
+    db_subnet_2_id = module.network.database_subnets[1]
+    rds_sg_id = module.network.database_sg_id
+  
+}
