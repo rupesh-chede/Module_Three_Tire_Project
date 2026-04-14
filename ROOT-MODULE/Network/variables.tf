@@ -11,7 +11,7 @@ variable "vpc_name" {
     default = ""
 }
 
-####----subnets-----####
+####----all subnets-----####
 
 variable "public_sub_1_cidr" {
     type = string
